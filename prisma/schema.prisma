@@ -1,0 +1,45 @@
+//Prisma is an ORM (Object-Relational Mapping) that allows you to interact with your PostgreSQL database using TypeScript. 
+//Prisma generates TypeScript types, auto-completes your database queries, and simplifies database migrations.
+
+// note
+
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
+  password String
+  Queue     Queue[]
+  createdAt DateTime @default(now())
+}
+
+model Song {
+  id Int  @id @default(autoincrement())
+  title  String
+  artist String
+  genre   String?
+  poster  String ?
+   Queue     Queue[]
+  createdAt DateTime @default(now())
+}
+
+model Queue {
+  id        Int      @id @default(autoincrement())
+  songId    Int
+  userId    Int
+  upvotes   Int      @default(0)
+  createdAt DateTime @default(now())
+  // Relations
+  Song      Song     @relation(fields: [songId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+}

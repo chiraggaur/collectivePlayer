@@ -1,0 +1,161 @@
+Sure! In Prisma, the most common CRUD (Create, Read, Update, Delete) commands revolve around the PrismaClient instance methods like findUnique, findFirst, create, update, delete, and more. Let me explain these commands with examples specifically using your Song model.
+
+1. Create (Insert)
+typescript
+Copy code
+// Creating a new song
+const newSong = await prisma.song.create({
+  data: {
+    title: "Shape of You",
+    artist: "Ed Sheeran",
+    genre: "Pop",
+    poster: "https://image.url/poster.jpg",
+  },
+});
+2. Read (Find)
+a. findUnique
+Use findUnique when you want to fetch a record by its unique identifier (like id).
+typescript
+Copy code
+const songById = await prisma.song.findUnique({
+  where: {
+    id: 1, // Searching by the unique ID
+  },
+});
+Note: You can only use findUnique with fields that are declared as unique in your schema (e.g., id or fields with @@unique).
+b. findFirst
+Use findFirst when you want to fetch the first record that matches specific criteria (like title and artist).
+typescript
+Copy code
+const songByTitleAndArtist = await prisma.song.findFirst({
+  where: {
+    title: "Shape of You",
+    artist: "Ed Sheeran",
+  },
+});
+c. findMany
+Use findMany when you want to fetch multiple records based on some conditions or fetch all records.
+typescript
+Copy code
+// Fetch all songs
+const allSongs = await prisma.song.findMany();
+
+// Fetch songs of a specific genre
+const popSongs = await prisma.song.findMany({
+  where: {
+    genre: "Pop",
+  },
+});
+
+// Fetch songs with pagination (e.g., 10 songs per page)
+const paginatedSongs = await prisma.song.findMany({
+  skip: 0, // Starting index
+  take: 10, // Number of records to fetch
+});
+3. Update
+a. Update a Single Record
+typescript
+Copy code
+const updatedSong = await prisma.song.update({
+  where: {
+    id: 1, // The unique ID of the song to update
+  },
+  data: {
+    genre: "Pop-Rock", // Updating the genre
+  },
+});
+b. Update Multiple Records
+typescript
+Copy code
+const updatedSongs = await prisma.song.updateMany({
+  where: {
+    genre: "Pop", // Updating all songs with genre "Pop"
+  },
+  data: {
+    genre: "Pop-Rock",
+  },
+});
+4. Delete
+a. Delete a Single Record
+typescript
+Copy code
+const deletedSong = await prisma.song.delete({
+  where: {
+    id: 1, // The unique ID of the song to delete
+  },
+});
+b. Delete Multiple Records
+typescript
+Copy code
+const deletedSongs = await prisma.song.deleteMany({
+  where: {
+    genre: "Pop-Rock",
+  },
+});
+5. Count
+Get the count of records matching specific conditions.
+typescript
+Copy code
+const songCount = await prisma.song.count({
+  where: {
+    genre: "Pop",
+  },
+});
+6. Aggregate Functions
+Perform aggregate operations like sum, min, max, etc.
+typescript
+Copy code
+const songStats = await prisma.song.aggregate({
+  _count: {
+    id: true,
+  },
+  _min: {
+    createdAt: true,
+  },
+  _max: {
+    createdAt: true,
+  },
+});
+7. Upsert
+upsert is a combination of create and update. It creates a new record if it does not exist or updates an existing one.
+typescript
+Copy code
+const upsertedSong = await prisma.song.upsert({
+  where: {
+    id: 1, // The unique ID of the song
+  },
+  update: {
+    genre: "Pop-Rock", // If it exists, update the genre
+  },
+  create: {
+    title: "Blinding Lights",
+    artist: "The Weeknd",
+    genre: "Pop",
+    poster: "https://image.url/poster.jpg",
+  },
+});
+8. Group By
+Group records based on a field and perform aggregation.
+typescript
+Copy code
+const groupedSongs = await prisma.song.groupBy({
+  by: ["genre"],
+  _count: {
+    id: true,
+  },
+});
+Summary Table
+Operation	Command Example
+Create	prisma.song.create
+Read One	prisma.song.findUnique
+Read First	prisma.song.findFirst
+Read Many	prisma.song.findMany
+Update	prisma.song.update
+Update Many	prisma.song.updateMany
+Delete	prisma.song.delete
+Delete Many	prisma.song.deleteMany
+Count	prisma.song.count
+Aggregate	prisma.song.aggregate
+Upsert	prisma.song.upsert
+Group By	prisma.song.groupBy
+These are some of the common Prisma commands you'll use when working with a database. If you encounter any specific issues or need further assistance, feel free to ask!
