@@ -9,12 +9,10 @@ services:
     buildCommand: npm install && npm run vercel-build
     startCommand: npm start
 
-    # Specify your environment variables (add your own keys and values)
+    # Environment variables
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: YOUR_DATABASE_NAME
-          property: connectionString
+        value: YOUR_DATABASE_URL
       - key: SUPABASE_URL
         value: YOUR_SUPABASE_URL
       - key: SUPABASE_ANON_KEY
@@ -22,17 +20,9 @@ services:
       - key: SUPABASE_SERVICE_ROLE_KEY
         value: YOUR_SUPABASE_SERVICE_ROLE_KEY
 
-    # Define any health checks
+    # Define any health checks (you can update the path if needed)
     healthCheckPath: /
 
-    # Set the root directory for your project
-    rootDir: /
-
-    # Include these files in the build
-    includedFiles:
-      - dist/**
-      - src/**
-      - prisma/**
-      - package.json
-      - tsconfig.json
-      - .env
+    # Specify any additional options or settings if needed
+    autoDeploy: true
+    branch: main
