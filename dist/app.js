@@ -46,4 +46,3 @@ app.use("/", (res) => {
     res.status(200).json({ message: "page is live" });
 });
 exports.default = app;
-//adding again to main branch
