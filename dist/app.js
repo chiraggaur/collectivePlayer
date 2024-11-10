@@ -41,4 +41,9 @@ app.use("/api/user", user_routes_1.default);
 app.use("/api/songs", song_routes_1.default);
 app.use("/api/queue", queue_route_1.default);
 // handling error routes
+app.use("/", (res) => {
+    console.log("home page is live ");
+    res.status(200).json({ message: "page is live" });
+});
 exports.default = app;
+//adding again to main branch
