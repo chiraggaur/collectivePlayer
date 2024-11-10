@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: saascollectiveplayer
+    env: node
+    plan: free
+    region: oregon
+
+    # Set up the build and start commands
+    buildCommand: npm install && npm run vercel-build
+    startCommand: npm start
+
+    # Specify your environment variables (add your own keys and values)
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: YOUR_DATABASE_NAME
+          property: connectionString
+      - key: SUPABASE_URL
+        value: YOUR_SUPABASE_URL
+      - key: SUPABASE_ANON_KEY
+        value: YOUR_SUPABASE_ANON_KEY
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        value: YOUR_SUPABASE_SERVICE_ROLE_KEY
+
+    # Define any health checks
+    healthCheckPath: /
+
+    # Set the root directory for your project
+    rootDir: /
+
+    # Include these files in the build
+    includedFiles:
+      - dist/**
+      - src/**
+      - prisma/**
+      - package.json
+      - tsconfig.json
+      - .env
